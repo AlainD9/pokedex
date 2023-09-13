@@ -32,12 +32,12 @@ class TypeFixtures extends Fixture
         $this->addReference(self::TYPE_FIREBIRD, $type2);
 
         $type3 = new Type();
-        $type3->setName('Fire');
+        $type3->setName('Water');
         $manager->persist($type3);
         $this->addReference(self::TYPE_WATER, $type3);
 
         $type4 = new Type();
-        $type4->setName('Fire Bird');
+        $type4->setName('Bug');
         $manager->persist($type4);
         $this->addReference(self::TYPE_BUG, $type4);
 

@@ -22,36 +22,41 @@ class PokedexController extends AbstractController
     }
         
     #[Route('/pokedex/{id<\d+>}', name: 'app_pokedex_pokemon')]
-    public function show(int $id, PokemonRepository $pokemonRepository, Pokemon $pokemon, EntityManagerInterface $entityManager):response
+    public function show(int $id, PokemonRepository $pokemonRepository): Response
     {
-        $currentPokemonId = $pokemon->getId();
-
+        $currentPokemon = $pokemonRepository->find($id);
+    
+        if (!$currentPokemon) {
+            throw $this->createNotFoundException();
+        }
+    
+        // Get the current pokemon's ID
+        $currentPokemonId = $currentPokemon->getId();
+    
         // Fetch the previous pokemon (if exists)
-        $previousPokemon = $entityManager->getRepository(pokemon::class)
-            ->createQueryBuilder('p')
+        $previousPokemon = $pokemonRepository->createQueryBuilder('p')
             ->where('p.id < :currentPokemonId')
             ->orderBy('p.id', 'DESC')
             ->setParameter('currentPokemonId', $currentPokemonId)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-
+    
         // Fetch the next pokemon (if exists)
-        $nextPokemon = $entityManager->getRepository(pokemon::class)
-            ->createQueryBuilder('p')
+        $nextPokemon = $pokemonRepository->createQueryBuilder('p')
             ->where('p.id > :currentPokemonId')
             ->orderBy('p.id', 'ASC')
             ->setParameter('currentPokemonId', $currentPokemonId)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-
-        $pokemon = $pokemonRepository->find($id);
-        if (!$pokemon){throw $this->createNotFoundException();}
+    
         return $this->render('pokedex/pokemon.html.twig', [
-            'pokemon' => $pokemon,
-
+            'pokemon' => $currentPokemon,
+            'previousPokemon' => $previousPokemon,
+            'nextPokemon' => $nextPokemon,
         ]);
     }
+    
 }
 
