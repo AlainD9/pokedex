@@ -1,0 +1,22 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PokedexController!{% endblock %}
+
+{% block body %}
+    <h1>{{ pokemon.name }}</h1>
+    {# <h2>{{ pokemon.type }}</h2> #}
+    <img src="{{ pokemon.image }}" alt="{{pokemon.name}}'s gif">
+    <br>
+        {% if previousPokemon %}
+            <a href="{{ path('pokemon_show', {'id': previousPokemon.id}) }}">Previous Pokemon</a>
+        {% endif %}
+
+        {% if nextPokemon %}
+            <a href="{{ path('pokemon_show', {'id': nextPokemon.id}) }}">Next Pokemon</a>
+        {% endif %}
+    <br>
+    <a href="{{ path('app_pokedex') }}">Back to Pokedex</a>
+
+{% endblock %}
+
