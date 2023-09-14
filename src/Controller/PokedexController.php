@@ -11,8 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PokedexController extends AbstractController
 {
-
-    #[Route('/pokedex', name: 'app_pokedex')]
+    #[Route('', name:'app_pokedex'), Route('/pokedex', name: 'app_pokedex_index')]
     public function showAllPokemon(PokemonRepository $pokemonRepository): Response
     {
         return $this->render('pokedex/index.html.twig', [
@@ -20,43 +19,38 @@ class PokedexController extends AbstractController
 
         ]);
     }
-        
+
     #[Route('/pokedex/{id<\d+>}', name: 'app_pokedex_pokemon')]
-    public function show(int $id, PokemonRepository $pokemonRepository): Response
+    public function show(Pokemon $pokemon, EntityManagerInterface $entityManager): Response
     {
-        $currentPokemon = $pokemonRepository->find($id);
-    
-        if (!$currentPokemon) {
-            throw $this->createNotFoundException();
-        }
-    
-        // Get the current pokemon's ID
-        $currentPokemonId = $currentPokemon->getId();
-    
-        // Fetch the previous pokemon (if exists)
-        $previousPokemon = $pokemonRepository->createQueryBuilder('p')
+        $pokemonId = $pokemon->getId();
+
+        $previousPokemon = $entityManager->createQueryBuilder()
+            ->select('p')
+            ->from(Pokemon::class, 'p')
             ->where('p.id < :currentPokemonId')
             ->orderBy('p.id', 'DESC')
-            ->setParameter('currentPokemonId', $currentPokemonId)
+            ->setParameter('currentPokemonId', $pokemonId)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-    
-        // Fetch the next pokemon (if exists)
-        $nextPokemon = $pokemonRepository->createQueryBuilder('p')
+
+        $nextPokemon = $entityManager->createQueryBuilder()
+            ->select('p')
+            ->from(Pokemon::class, 'p')
             ->where('p.id > :currentPokemonId')
             ->orderBy('p.id', 'ASC')
-            ->setParameter('currentPokemonId', $currentPokemonId)
+            ->setParameter('currentPokemonId', $pokemonId)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-    
+
         return $this->render('pokedex/pokemon.html.twig', [
-            'pokemon' => $currentPokemon,
+            'pokemon' => $pokemon,
             'previousPokemon' => $previousPokemon,
             'nextPokemon' => $nextPokemon,
         ]);
     }
-    
+
 }
 

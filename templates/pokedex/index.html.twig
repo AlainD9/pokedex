@@ -3,6 +3,7 @@
 {% block title %}Hello PokedexController!{% endblock %}
 
 {% block body %}
+
     <h1> Pokedex </h1>
         {% for pokemen in pokemon %}
             <a href="{{ path('app_pokedex_pokemon', { id: pokemen.id }) }}">{{ pokemen.name }}</a>
@@ -10,4 +11,5 @@
         {% else %}
             {{ 'Mising No.' }}
         {% endfor %}
+        
 {% endblock %}

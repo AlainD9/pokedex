@@ -1,9 +1,9 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello PokedexController!{% endblock %}
 
 {% block body %}
+
     <h1>{{ pokemon.name }}</h1>
     <h3>{{ 'Pokemon\'s type: ' }}{{ pokemon.type.name }}<br>{{ 'First region: ' }}{{ pokemon.region.name }}</h3>
     <img src="{{ pokemon.image }}" alt="{{pokemon.name}}'s gif">

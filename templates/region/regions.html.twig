@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RegionController!{% endblock %}
+
+{% block body %}
+
+    <h1> regions </h1>
+        {% for region in regions %}
+            <a href="{{ path('app_region', {regionName: region.name}) }}">{{ region.name }}</a>
+            <br>
+        {% else %}
+            {{ 'No regions found.' }}
+        {% endfor %}
+        
+{% endblock %}

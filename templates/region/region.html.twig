@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RegionController!{% endblock %}
+
+{% block body %}
+    <h1>{{ regionName }}</h1>
+    {# <img src="{{ region.image }}" alt="{{regionName}}'s gif"> #}
+    <br>
+    {% if previousRegion %}
+        <a href="{{ path('app_region', {'regionName': previousRegion.name}) }}">Previous Region</a>
+    {% endif %}
+
+    {% if nextRegion %}
+        <a href="{{ path('app_region', {'regionName': nextRegion.name}) }}">Next Region</a>
+    {% endif %}
+    <br>
+    <a href="{{ path('app_regions') }}">Back to Regions</a>
+{% endblock %}
