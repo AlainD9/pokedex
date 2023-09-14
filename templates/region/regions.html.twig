@@ -4,7 +4,8 @@
 
 {% block body %}
 
-    <h1> regions </h1>
+ <a href="{{ path('app_index') }}"><h1>Pokemen</a> Regions</h1>
+
         {% for region in regions %}
             <a href="{{ path('app_region', {regionName: region.name}) }}">{{ region.name }}</a>
             <br>

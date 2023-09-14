@@ -4,12 +4,10 @@
 
 {% block body %}
 
-    <h1> Pokedex </h1>
-        {% for pokemen in pokemon %}
-            <a href="{{ path('app_pokedex_pokemon', { id: pokemen.id }) }}">{{ pokemen.name }}</a>
-            <br>
-        {% else %}
-            {{ 'Mising No.' }}
-        {% endfor %}
+ <a href="{{ path('app_index') }}"><h1>Pokemen</h1></a>
+
+        <a href="{{ path('app_pokedex') }}"><h3>Pokedex</h3></a>
+        <a href="{{ path('app_regions') }}"><h3>Regions</h3></a>
+        <a href="{{ path('app_types') }}"><h3>Types</h3></a>
         
 {% endblock %}

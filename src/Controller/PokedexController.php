@@ -11,8 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PokedexController extends AbstractController
 {
-    #[Route('', name:'app_pokedex'), Route('/pokedex', name: 'app_pokedex_index')]
-    public function showAllPokemon(PokemonRepository $pokemonRepository): Response
+    #[Route('/', name:'app_index')]
+    public function index(PokemonRepository $pokemonRepository): Response
     {
         return $this->render('pokedex/index.html.twig', [
             'pokemon' => $pokemonRepository->findAll(),
@@ -20,7 +20,16 @@ class PokedexController extends AbstractController
         ]);
     }
 
-    #[Route('/pokedex/{id<\d+>}', name: 'app_pokedex_pokemon')]
+    #[Route('/pokedex', name: 'app_pokedex')]
+    public function showAllPokemon(PokemonRepository $pokemonRepository): Response
+    {
+        return $this->render('pokedex/pokedex.html.twig', [
+            'pokemon' => $pokemonRepository->findAll(),
+
+        ]);
+    }
+
+    #[Route('/pokedex/{id<\d+>}', name: 'app_pokemon')]
     public function show(Pokemon $pokemon, EntityManagerInterface $entityManager): Response
     {
         $pokemonId = $pokemon->getId();
@@ -49,6 +58,14 @@ class PokedexController extends AbstractController
             'pokemon' => $pokemon,
             'previousPokemon' => $previousPokemon,
             'nextPokemon' => $nextPokemon,
+        ]);
+    }
+
+    #[Route('/add', name: 'app_add_to_pokedex')]
+    public function addToPokedex(): Response
+    {
+        return $this->render('pokedex/add.html.twig', [
+
         ]);
     }
 

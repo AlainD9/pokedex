@@ -3,17 +3,17 @@
 {% block title %}Hello PokedexController!{% endblock %}
 
 {% block body %}
+    <a href="{{ path('app_index') }}"><h1>Pokemen</a><br><br>{{ pokemon.name }}</h1>
 
-    <h1>{{ pokemon.name }}</h1>
     <h3>{{ 'Pokemon\'s type: ' }}{{ pokemon.type.name }}<br>{{ 'First region: ' }}{{ pokemon.region.name }}</h3>
     <img src="{{ pokemon.image }}" alt="{{pokemon.name}}'s gif">
     <br>
         {% if previousPokemon %}
-            <a href="{{ path('app_pokedex_pokemon', {'id': previousPokemon.id}) }}">Previous Pokemon</a>
+            <a href="{{ path('app_pokemon', {'id': previousPokemon.id}) }}">Previous Pokemon</a>
         {% endif %}
 
         {% if nextPokemon %}
-            <a href="{{ path('app_pokedex_pokemon', {'id': nextPokemon.id}) }}">Next Pokemon</a>
+            <a href="{{ path('app_pokemon', {'id': nextPokemon.id}) }}">Next Pokemon</a>
         {% endif %}
     <br>
     <a href="{{ path('app_pokedex') }}">Back to Pokedex</a>

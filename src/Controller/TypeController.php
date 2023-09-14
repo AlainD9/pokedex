@@ -19,7 +19,7 @@ class TypeController extends AbstractController
         ]);
     }
 
-    #[Route('/types/{typeName<[a-zA-Z]+>}', name: 'app_type')]
+    #[Route('/types/{typeName<[a-zA-Z_\s-]+>}', name: 'app_type')]
     public function show(string $typeName, EntityManagerInterface $entityManager, TypeRepository $typeRepository): Response
     {
         $type = $typeRepository->findOneBy(['name' => $typeName]);

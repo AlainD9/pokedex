@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ypeController!{% endblock %}
+
+{% block body %}
+
+<a href="{{ path('app_index') }}"><h1>Pokemen</a> Types</h1>
+
+        {% for type in types %}
+            <a href="{{ path('app_type', {typeName: type.name}) }}">{{ type.name }}</a>
+            <br>
+        {% else %}
+            {{ 'No types found.' }}
+        {% endfor %}
+        
+{% endblock %}
