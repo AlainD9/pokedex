@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Type;
+use App\Form\TypeType;
 use App\Repository\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,7 +21,7 @@ class TypeController extends AbstractController
         ]);
     }
 
-    #[Route('/types/{typeName<[a-zA-Z_\s-]+>}', name: 'app_type')]
+    #[Route('/type/{typeName<[a-zA-Z_\s-]+>}', name: 'app_type')]
     public function show(string $typeName, EntityManagerInterface $entityManager, TypeRepository $typeRepository): Response
     {
         $type = $typeRepository->findOneBy(['name' => $typeName]);
@@ -32,7 +34,7 @@ class TypeController extends AbstractController
     
         $previousType = $entityManager->createQueryBuilder()
             ->select('t')
-            ->from(type::class, 't')
+            ->from(Type::class, 't')
             ->where('t.id < :currentTypeId')
             ->orderBy('t.id', 'DESC')
             ->setParameter('currentTypeId', $typeId)
@@ -56,6 +58,21 @@ class TypeController extends AbstractController
             'nextType' => $nextType,
         ]);
     }
-    
+   
+    #[Route('types/add', name: 'app_add_to_types')]
+    public function addToType(Request $request, EntityManagerInterface $entityManagerInterface): Response
+    {
+        $form = $this->createForm(TypeType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $type = $form->getData();
+            $entityManagerInterface->persist($type);
+            $entityManagerInterface->flush();
+            return $this->redirectToRoute('app_types');
+        }
+        return $this->render('type/add.html.twig', [
+            'form' => $form,
+        ]);
+    }
     
 }

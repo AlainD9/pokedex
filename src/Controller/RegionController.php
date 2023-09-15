@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Region;
+use App\Form\RegionType;
 use App\Repository\RegionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,7 +21,7 @@ class RegionController extends AbstractController
         ]);
     }
 
-    #[Route('/regions/{regionName<[a-zA-Z]+>}', name: 'app_region')]
+    #[Route('region/{regionName<[a-zA-Z]+>}', name: 'app_region')]
     public function show(string $regionName, EntityManagerInterface $entityManager, RegionRepository $regionRepository): Response
     {
         $region = $regionRepository->findOneBy(['name' => $regionName]);
@@ -57,5 +59,20 @@ class RegionController extends AbstractController
         ]);
     }
     
-    
+    #[Route('regions/add', name: 'app_add_to_regions')]
+    public function addToRegion(Request $request, EntityManagerInterface $entityManagerInterface): Response
+    {
+        $form = $this->createForm(RegionType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $region = $form->getData();
+            $entityManagerInterface->persist($region);
+            $entityManagerInterface->flush();
+            return $this->redirectToRoute('app_regions');
+        }
+        return $this->render('region/add.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
 }

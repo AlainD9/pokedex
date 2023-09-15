@@ -6,6 +6,8 @@
 
  <a href="{{ path('app_index') }}"><h1>Pokemen</a> Regions</h1>
 
+        <h3><a href="{{ path('app_add_to_regions') }}">add a Region</a></h3>
+        <br><br>
         {% for region in regions %}
             <a href="{{ path('app_region', {regionName: region.name}) }}">{{ region.name }}</a>
             <br>

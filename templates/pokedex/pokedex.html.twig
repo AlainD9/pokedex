@@ -9,7 +9,7 @@
         <h3><a href="{{ path('app_add_to_pokedex') }}">add a pokemon</a></h3>
         <br><br>
         {% for pokemen in pokemon %}
-            <a href="{{ path('app_pokemon', { id: pokemen.id }) }}">{{ pokemen.name }}</a>
+            <a href="{{ path('app_pokemon', { pokemonName: pokemen.name }) }}">{{ pokemen.name }}</a>
             <br>
         {% else %}
             {{ 'Mising No.' }}

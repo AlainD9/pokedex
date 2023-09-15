@@ -6,6 +6,8 @@
 
 <a href="{{ path('app_index') }}"><h1>Pokemen</a> Types</h1>
 
+        <h3><a href="{{ path('app_add_to_types') }}">add a type</a></h3>
+        <br><br>
         {% for type in types %}
             <a href="{{ path('app_type', {typeName: type.name}) }}">{{ type.name }}</a>
             <br>
