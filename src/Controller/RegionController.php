@@ -26,7 +26,8 @@ class RegionController extends AbstractController
     {
         $region = $regionRepository->findOneBy(['name' => $regionName]);
     
-        if (!$region) {
+        if (!$region)
+        {
             throw $this->createNotFoundException('Region not found');
         }
     
@@ -64,7 +65,8 @@ class RegionController extends AbstractController
     {
         $form = $this->createForm(RegionType::class);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted() && $form->isValid())
+        {
             $region = $form->getData();
             $entityManagerInterface->persist($region);
             $entityManagerInterface->flush();
@@ -72,6 +74,32 @@ class RegionController extends AbstractController
         }
         return $this->render('region/add.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+    #[Route('regions/edit/{regionName<[a-zA-Z_\s-]+>}', name: 'app_edit_from_regions')]
+    public function editFromRegions(Request $request, EntityManagerInterface $entityManagerInterface, string $regionName): Response
+    {
+        $region = $entityManagerInterface->getRepository(Region::class)->findOneBy(['name' => $regionName]);
+    
+        if (!$region) {
+            throw $this->createNotFoundException('Region not found');
+        }
+    
+        $form = $this->createForm(RegionType::class, $region);
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManagerInterface->flush();
+            
+            return $this->redirectToRoute('app_regions');
+        }
+    
+        return $this->render('region/edit.html.twig', [
+            'regionName' => $regionName,
+            'region' => $region,
+            'form' => $form->createView(),
         ]);
     }
 

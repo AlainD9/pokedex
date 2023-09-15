@@ -26,7 +26,8 @@ class TypeController extends AbstractController
     {
         $type = $typeRepository->findOneBy(['name' => $typeName]);
     
-        if (!$type) {
+        if (!$type)
+        {
             throw $this->createNotFoundException('Type not found');
         }
     
@@ -64,7 +65,8 @@ class TypeController extends AbstractController
     {
         $form = $this->createForm(TypeType::class);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted() && $form->isValid())
+        {
             $type = $form->getData();
             $entityManagerInterface->persist($type);
             $entityManagerInterface->flush();
@@ -74,5 +76,30 @@ class TypeController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('types/edit/{typeName<[a-zA-Z_\s-]+>}', name: 'app_edit_from_types')]
+    public function editFromTypes(Request $request, EntityManagerInterface $entityManagerInterface, string $typeName): Response
+    {
+        $type = $entityManagerInterface->getRepository(Type::class)->findOneBy(['name' => $typeName]);
     
+        if (!$type) {
+            throw $this->createNotFoundException('type not found');
+        }
+    
+        $form = $this->createForm(TypeType::class, $type);
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManagerInterface->flush();
+            
+            return $this->redirectToRoute('app_types');
+        }
+    
+        return $this->render('type/edit.html.twig', [
+            'typeName' => $typeName,
+            'type' => $type,
+            'form' => $form->createView(),
+        ]);
+    }
 }

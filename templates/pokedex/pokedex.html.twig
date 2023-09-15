@@ -4,14 +4,20 @@
 
 {% block body %}
 
- <a href="{{ path('app_index') }}"><h1>Pokemen</a> Pokedex</h1>
+    <a href="{{ path('app_index') }}"><h1>Pokemen</a> Pokedex</h1>
 
         <h3><a href="{{ path('app_add_to_pokedex') }}">add a pokemon</a></h3>
-        <br><br>
+        <br>
+        <h3></h3>
+        <br>
         {% for pokemen in pokemon %}
+            <a href="{{ path('app_edit_from_pokedex', { pokemonName: pokemen.name }) }}">(Edit)</a>&nbsp;-&nbsp;
             <a href="{{ path('app_pokemon', { pokemonName: pokemen.name }) }}">{{ pokemen.name }}</a>
             <br>
         {% else %}
             {{ 'Mising No.' }}
         {% endfor %}
+    <br>
+    <a href="{{ path('app_index') }}">Back to Pokemen's Index</a>
+
 {% endblock %}

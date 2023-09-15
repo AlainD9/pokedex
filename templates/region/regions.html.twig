@@ -4,15 +4,18 @@
 
 {% block body %}
 
- <a href="{{ path('app_index') }}"><h1>Pokemen</a> Regions</h1>
+    <a href="{{ path('app_index') }}"><h1>Pokemen</a> Regions</h1>
 
         <h3><a href="{{ path('app_add_to_regions') }}">add a Region</a></h3>
-        <br><br>
+        <br>
         {% for region in regions %}
+            <a href="{{ path('app_edit_from_regions', { regionName: region.name }) }}">(Edit)</a>&nbsp;-&nbsp;
             <a href="{{ path('app_region', {regionName: region.name}) }}">{{ region.name }}</a>
             <br>
         {% else %}
             {{ 'No regions found.' }}
         {% endfor %}
-        
+    <br>
+    <a href="{{ path('app_index') }}">Back to Pokemen's Index</a>
+
 {% endblock %}

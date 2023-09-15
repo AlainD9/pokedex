@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Pokemon;
 use App\Form\Pokemonpokemon;
+use App\Form\PokemonType;
 use App\Repository\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,7 +37,8 @@ class PokedexController extends AbstractController
     {
         $pokemon = $pokemonRepository->findOneBy(['name' => $pokemonName]);
     
-        if (!$pokemon) {
+        if (!$pokemon)
+        {
             throw $this->createNotFoundException('Pokemon not found');
         }
     
@@ -70,20 +72,47 @@ class PokedexController extends AbstractController
         ]);
     }
     
-
     #[Route('pokedex/add', name: 'app_add_to_pokedex')]
     public function addToPokedex(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
-        $form = $this->createForm(Pokemonpokemon::class);
+        $form = $this->createForm(PokemonType::class);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted() && $form->isValid())
+        {
             $pokemon = $form->getData();
             $entityManagerInterface->persist($pokemon);
             $entityManagerInterface->flush();
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_pokedex');
         }
         return $this->render('pokedex/add.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+
+    #[Route('pokedex/edit/{pokemonName<[a-zA-Z_\s-]+>}', name: 'app_edit_from_pokedex')]
+    public function editFrompokedex(Request $request, EntityManagerInterface $entityManagerInterface, string $pokemonName): Response
+    {
+        $pokemon = $entityManagerInterface->getRepository(Pokemon::class)->findOneBy(['name' => $pokemonName]);
+    
+        if (!$pokemon) {
+            throw $this->createNotFoundException('pokemon not found');
+        }
+    
+        $form = $this->createForm(PokemonType::class, $pokemon);
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManagerInterface->flush();
+            
+            return $this->redirectToRoute('app_pokedex');
+        }
+    
+        return $this->render('pokedex/edit.html.twig', [
+            'pokemonName' => $pokemonName,
+            'pokemon' => $pokemon,
+            'form' => $form->createView(),
         ]);
     }
 

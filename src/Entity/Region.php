@@ -15,7 +15,7 @@ class Region
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'region', targetEntity: Pokemon::class, orphanRemoval: true)]
@@ -64,7 +64,6 @@ class Region
     public function removePokemon(Pokemon $pokemon): static
     {
         if ($this->pokemon->removeElement($pokemon)) {
-            // set the owning side to null (unless already changed)
             if ($pokemon->getRegion() === $this) {
                 $pokemon->setRegion(null);
             }
@@ -72,4 +71,10 @@ class Region
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getName(); 
+    }
+
 }

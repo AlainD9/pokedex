@@ -16,8 +16,8 @@ class PokemonType extends AbstractType
             ->add('name')
             ->add('number')
             ->add('image')
-            // ->add('type')
-            // ->add('region')
+            ->add('type')
+            ->add('region')
             ->add('submit', SubmitType::class)
         ;
     }

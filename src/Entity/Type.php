@@ -15,7 +15,7 @@ class Type
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'type', targetEntity: Pokemon::class, orphanRemoval: true)]
@@ -64,12 +64,16 @@ class Type
     public function removePokemon(Pokemon $pokemon): static
     {
         if ($this->pokemon->removeElement($pokemon)) {
-            // set the owning side to null (unless already changed)
             if ($pokemon->getType() === $this) {
                 $pokemon->setType(null);
             }
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName(); 
     }
 }
