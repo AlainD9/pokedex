@@ -21,7 +21,7 @@ class RegionController extends AbstractController
         ]);
     }
 
-    #[Route('region/{regionName<[a-zA-Z]+>}', name: 'app_region')]
+    #[Route('region/{regionName<[a-zA-Z_\s-]+>}', name: 'app_region')]
     public function show(string $regionName, EntityManagerInterface $entityManager, RegionRepository $regionRepository): Response
     {
         $region = $regionRepository->findOneBy(['name' => $regionName]);

@@ -20,12 +20,12 @@ class RegionFixtures extends Fixture
         $this->addReference(self::REGION_KANTO, $region);
         
         $region = new Region();
-        $region->setName('Jotho');
+        $region->setName('Johto');
         $manager->persist($region);
         $this->addReference(self::REGION_JOTHO, $region);
 
         $region = new Region();
-        $region->setName('Sinho');
+        $region->setName('Sinnoh');
         $manager->persist($region);
         $this->addReference(self::REGION_SINHO, $region);
 
