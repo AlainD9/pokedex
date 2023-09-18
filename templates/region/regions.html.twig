@@ -10,7 +10,7 @@
         <br>
         {% for region in regions %}
             <a href="{{ path('app_edit_from_regions', { slug: region.slug }) }}">(Edit)</a>&nbsp;-&nbsp;
-            <a href="{{ path('app_region', {slug: region.slug}) }}">{{ region.slug }}</a>
+            <a href="{{ path('app_region', { slug: region.slug }) }}">{{ region.name }}</a>
             <br>
         {% else %}
             {{ 'No regions found.' }}

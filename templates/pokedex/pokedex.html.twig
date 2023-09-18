@@ -12,7 +12,7 @@
         <br>
         {% for pokemen in pokemon %}
             <a href="{{ path('app_edit_from_pokedex', { slug: pokemen.slug }) }}">(Edit)</a>&nbsp;-&nbsp;
-            <a href="{{ path('app_pokemon', { slug: pokemen.slug }) }}">{{ pokemen.slug }}</a> - {{ pokemen.number }}
+            <a href="{{ path('app_pokemon', { slug: pokemen.slug }) }}">{{ pokemen.name }}</a> - {{ pokemen.number }}
             <br>
         {% else %}
             {{ 'Mising No.' }}

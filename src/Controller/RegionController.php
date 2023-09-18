@@ -24,7 +24,7 @@ class RegionController extends AbstractController
     #[Route('region/{slug}', name: 'app_region')]
     public function show(string $slug, EntityManagerInterface $entityManager, RegionRepository $regionRepository): Response
     {
-        $region = $regionRepository->findOneBy(['name' => $slug]);
+        $region = $regionRepository->findOneBy(['slug' => $slug]);
     
         if (!$region)
         {
@@ -55,6 +55,7 @@ class RegionController extends AbstractController
     
         return $this->render('region/region.html.twig', [
             'slug' => $slug,
+            'region' => $region,
             'previousRegion' => $previousRegion,
             'nextRegion' => $nextRegion,
         ]);
@@ -80,7 +81,7 @@ class RegionController extends AbstractController
     #[Route('regions/edit/{slug}', name: 'app_edit_from_regions')]
     public function editFromRegions(Request $request, EntityManagerInterface $entityManagerInterface, string $slug): Response
     {
-        $region = $entityManagerInterface->getRepository(Region::class)->findOneBy(['name' => $slug]);
+        $region = $entityManagerInterface->getRepository(Region::class)->findOneBy(['slug' => $slug]);
     
         if (!$region) {
             throw $this->createNotFoundException('Region not found');

@@ -24,7 +24,7 @@ class TypeController extends AbstractController
     #[Route('/type/{slug}', name: 'app_type')]
     public function show(string $slug, EntityManagerInterface $entityManager, TypeRepository $typeRepository): Response
     {
-        $type = $typeRepository->findOneBy(['name' => $slug]);
+        $type = $typeRepository->findOneBy(['slug' => $slug]);
     
         if (!$type)
         {
@@ -55,6 +55,7 @@ class TypeController extends AbstractController
     
         return $this->render('type/type.html.twig', [
             'slug' => $slug,
+            'type' => $type,
             'previousType' => $previousType,
             'nextType' => $nextType,
         ]);
@@ -80,7 +81,7 @@ class TypeController extends AbstractController
     #[Route('types/edit/{slug}', name: 'app_edit_from_types')]
     public function editFromTypes(Request $request, EntityManagerInterface $entityManagerInterface, string $slug): Response
     {
-        $type = $entityManagerInterface->getRepository(Type::class)->findOneBy(['name' => $slug]);
+        $type = $entityManagerInterface->getRepository(Type::class)->findOneBy(['slug' => $slug]);
     
         if (!$type) {
             throw $this->createNotFoundException('type not found');

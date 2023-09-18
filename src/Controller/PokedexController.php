@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Pokemon;
-use App\Form\Pokemonpokemon;
 use App\Form\PokemonType;
 use App\Repository\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,7 +34,7 @@ class PokedexController extends AbstractController
     #[Route('pokemon/{slug}', name: 'app_pokemon')]
     public function show(string $slug, EntityManagerInterface $entityManager, PokemonRepository $pokemonRepository): Response
     {
-        $pokemon = $pokemonRepository->findOneBy(['name' => $slug]);
+        $pokemon = $pokemonRepository->findOneBy(['slug' => $slug]);
     
         if (!$pokemon)
         {

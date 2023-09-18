@@ -4,10 +4,10 @@
 
 {% block body %}
 
-    <a href="{{ path('app_index') }}"><h1>Pokemen</a><br><br>{{ slug }}</h1>
+    <a href="{{ path('app_index') }}"><h1>Pokemen</a><br><br>{{ region.name }}</h1>
 
 
-    {# <img src="{{ region.image }}" alt="{{slug}}'s gif"> #}
+    {# <img src="{{ region.image }}" alt="{{ region.name }}'s gif"> #}
     <br>
     {% if previousRegion %}
         <a href="{{ path('app_region', {'slug': previousRegion.slug}) }}">Previous Region</a>

@@ -10,7 +10,7 @@
         <br>
         {% for type in types %}
             <a href="{{ path('app_edit_from_types', { slug: type.slug }) }}">(Edit)</a>&nbsp;-&nbsp;
-            <a href="{{ path('app_type', {slug: type.slug}) }}">{{ type.slug }}</a>
+            <a href="{{ path('app_type', { slug: type.slug }) }}">{{ type.name }}</a>
             <br>
         {% else %}
             {{ 'No types found.' }}
