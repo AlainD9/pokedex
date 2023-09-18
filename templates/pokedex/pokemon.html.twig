@@ -3,7 +3,7 @@
 {% block title %}Hello PokedexController!{% endblock %}
 
 {% block body %}
-    <a href="{{ path('app_index') }}"><h1>Pokemen</a><br><br>{{ pokemon.name }}</h1>
+    <a href="{{ path('app_index') }}"><h1>Pokemen</a><br><br>{{ pokemon.name }} - {{ pokemon.number }}</h1>
 
     <h3>{{ 'Pokemon\'s type: ' }}{{ pokemon.type.name }}<br>{{ 'First region: ' }}{{ pokemon.region.name }}</h3>
     <img src="{{ pokemon.image }}" alt="{{pokemon.name}}'s gif">
