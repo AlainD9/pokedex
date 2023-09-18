@@ -32,10 +32,10 @@ class PokedexController extends AbstractController
         ]);
     }
 
-    #[Route('pokemon/{pokemonName<[a-zA-Z_\s-]+>}', name: 'app_pokemon')]
-    public function show(string $pokemonName, EntityManagerInterface $entityManager, PokemonRepository $pokemonRepository): Response
+    #[Route('pokemon/{slug}', name: 'app_pokemon')]
+    public function show(string $slug, EntityManagerInterface $entityManager, PokemonRepository $pokemonRepository): Response
     {
-        $pokemon = $pokemonRepository->findOneBy(['name' => $pokemonName]);
+        $pokemon = $pokemonRepository->findOneBy(['name' => $slug]);
     
         if (!$pokemon)
         {
@@ -65,7 +65,7 @@ class PokedexController extends AbstractController
             ->getOneOrNullResult();
     
         return $this->render('pokedex/pokemon.html.twig', [
-            'pokemonName' => $pokemonName,
+            'slug' => $slug,
             'pokemon' => $pokemon,
             'previousPokemon' => $previousPokemon,
             'nextPokemon' => $nextPokemon,
@@ -90,10 +90,10 @@ class PokedexController extends AbstractController
     }
 
 
-    #[Route('pokedex/edit/{pokemonName<[a-zA-Z_\s-]+>}', name: 'app_edit_from_pokedex')]
-    public function editFrompokedex(Request $request, EntityManagerInterface $entityManagerInterface, string $pokemonName): Response
+    #[Route('pokedex/edit/{slug}', name: 'app_edit_from_pokedex')]
+    public function editFrompokedex(Request $request, EntityManagerInterface $entityManagerInterface, string $slug): Response
     {
-        $pokemon = $entityManagerInterface->getRepository(Pokemon::class)->findOneBy(['name' => $pokemonName]);
+        $pokemon = $entityManagerInterface->getRepository(Pokemon::class)->findOneBy(['name' => $slug]);
     
         if (!$pokemon) {
             throw $this->createNotFoundException('pokemon not found');
@@ -110,7 +110,7 @@ class PokedexController extends AbstractController
         }
     
         return $this->render('pokedex/edit.html.twig', [
-            'pokemonName' => $pokemonName,
+            'slug' => $slug,
             'pokemon' => $pokemon,
             'form' => $form->createView(),
         ]);

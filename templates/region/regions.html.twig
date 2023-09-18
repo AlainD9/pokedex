@@ -9,8 +9,8 @@
         <h3><a href="{{ path('app_add_to_regions') }}">add a Region</a></h3>
         <br>
         {% for region in regions %}
-            <a href="{{ path('app_edit_from_regions', { regionName: region.name }) }}">(Edit)</a>&nbsp;-&nbsp;
-            <a href="{{ path('app_region', {regionName: region.name}) }}">{{ region.name }}</a>
+            <a href="{{ path('app_edit_from_regions', { slug: region.slug }) }}">(Edit)</a>&nbsp;-&nbsp;
+            <a href="{{ path('app_region', {slug: region.slug}) }}">{{ region.slug }}</a>
             <br>
         {% else %}
             {{ 'No regions found.' }}

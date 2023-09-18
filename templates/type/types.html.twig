@@ -9,8 +9,8 @@
         <h3><a href="{{ path('app_add_to_types') }}">add a type</a></h3>
         <br>
         {% for type in types %}
-            <a href="{{ path('app_edit_from_types', { typeName: type.name }) }}">(Edit)</a>&nbsp;-&nbsp;
-            <a href="{{ path('app_type', {typeName: type.name}) }}">{{ type.name }}</a>
+            <a href="{{ path('app_edit_from_types', { slug: type.slug }) }}">(Edit)</a>&nbsp;-&nbsp;
+            <a href="{{ path('app_type', {slug: type.slug}) }}">{{ type.slug }}</a>
             <br>
         {% else %}
             {{ 'No types found.' }}

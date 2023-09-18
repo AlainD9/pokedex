@@ -21,10 +21,10 @@ class TypeController extends AbstractController
         ]);
     }
 
-    #[Route('/type/{typeName<[a-zA-Z_\s-]+>}', name: 'app_type')]
-    public function show(string $typeName, EntityManagerInterface $entityManager, TypeRepository $typeRepository): Response
+    #[Route('/type/{slug}', name: 'app_type')]
+    public function show(string $slug, EntityManagerInterface $entityManager, TypeRepository $typeRepository): Response
     {
-        $type = $typeRepository->findOneBy(['name' => $typeName]);
+        $type = $typeRepository->findOneBy(['name' => $slug]);
     
         if (!$type)
         {
@@ -54,7 +54,7 @@ class TypeController extends AbstractController
             ->getOneOrNullResult();
     
         return $this->render('type/type.html.twig', [
-            'typeName' => $typeName,
+            'slug' => $slug,
             'previousType' => $previousType,
             'nextType' => $nextType,
         ]);
@@ -77,10 +77,10 @@ class TypeController extends AbstractController
         ]);
     }
 
-    #[Route('types/edit/{typeName<[a-zA-Z_\s-]+>}', name: 'app_edit_from_types')]
-    public function editFromTypes(Request $request, EntityManagerInterface $entityManagerInterface, string $typeName): Response
+    #[Route('types/edit/{slug}', name: 'app_edit_from_types')]
+    public function editFromTypes(Request $request, EntityManagerInterface $entityManagerInterface, string $slug): Response
     {
-        $type = $entityManagerInterface->getRepository(Type::class)->findOneBy(['name' => $typeName]);
+        $type = $entityManagerInterface->getRepository(Type::class)->findOneBy(['name' => $slug]);
     
         if (!$type) {
             throw $this->createNotFoundException('type not found');
@@ -97,7 +97,7 @@ class TypeController extends AbstractController
         }
     
         return $this->render('type/edit.html.twig', [
-            'typeName' => $typeName,
+            'slug' => $slug,
             'type' => $type,
             'form' => $form->createView(),
         ]);

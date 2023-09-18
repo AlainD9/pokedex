@@ -21,10 +21,10 @@ class RegionController extends AbstractController
         ]);
     }
 
-    #[Route('region/{regionName<[a-zA-Z]+>}', name: 'app_region')]
-    public function show(string $regionName, EntityManagerInterface $entityManager, RegionRepository $regionRepository): Response
+    #[Route('region/{slug}', name: 'app_region')]
+    public function show(string $slug, EntityManagerInterface $entityManager, RegionRepository $regionRepository): Response
     {
-        $region = $regionRepository->findOneBy(['name' => $regionName]);
+        $region = $regionRepository->findOneBy(['name' => $slug]);
     
         if (!$region)
         {
@@ -54,7 +54,7 @@ class RegionController extends AbstractController
             ->getOneOrNullResult();
     
         return $this->render('region/region.html.twig', [
-            'regionName' => $regionName,
+            'slug' => $slug,
             'previousRegion' => $previousRegion,
             'nextRegion' => $nextRegion,
         ]);
@@ -77,10 +77,10 @@ class RegionController extends AbstractController
         ]);
     }
 
-    #[Route('regions/edit/{regionName<[a-zA-Z_\s-]+>}', name: 'app_edit_from_regions')]
-    public function editFromRegions(Request $request, EntityManagerInterface $entityManagerInterface, string $regionName): Response
+    #[Route('regions/edit/{slug}', name: 'app_edit_from_regions')]
+    public function editFromRegions(Request $request, EntityManagerInterface $entityManagerInterface, string $slug): Response
     {
-        $region = $entityManagerInterface->getRepository(Region::class)->findOneBy(['name' => $regionName]);
+        $region = $entityManagerInterface->getRepository(Region::class)->findOneBy(['name' => $slug]);
     
         if (!$region) {
             throw $this->createNotFoundException('Region not found');
@@ -97,7 +97,7 @@ class RegionController extends AbstractController
         }
     
         return $this->render('region/edit.html.twig', [
-            'regionName' => $regionName,
+            'slug' => $slug,
             'region' => $region,
             'form' => $form->createView(),
         ]);
