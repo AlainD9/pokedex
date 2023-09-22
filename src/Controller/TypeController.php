@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TypeController extends AbstractController
 {
@@ -52,7 +53,7 @@ class TypeController extends AbstractController
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-    
+      
         return $this->render('type/type.html.twig', [
             'slug' => $slug,
             'type' => $type,
@@ -61,7 +62,8 @@ class TypeController extends AbstractController
         ]);
     }
    
-    #[Route('types/add', name: 'app_add_to_types')]
+    #[Route('add/types', name: 'app_add_to_types')]
+    #[IsGranted('ROLE_ADMIN')]
     public function addToType(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
         $form = $this->createForm(TypeType::class);
@@ -73,12 +75,17 @@ class TypeController extends AbstractController
             $entityManagerInterface->flush();
             return $this->redirectToRoute('app_types');
         }
+        $this->addFlash(
+            'success',
+            'New type found'
+        );
         return $this->render('type/add.html.twig', [
             'form' => $form,
         ]);
     }
 
-    #[Route('types/edit/{slug}', name: 'app_edit_from_types')]
+    #[Route('edit/types/{slug}', name: 'app_edit_from_types')]
+    #[IsGranted('ROLE_ADMIN')]
     public function editFromTypes(Request $request, EntityManagerInterface $entityManagerInterface, string $slug): Response
     {
         $type = $entityManagerInterface->getRepository(Type::class)->findOneBy(['slug' => $slug]);
@@ -96,7 +103,10 @@ class TypeController extends AbstractController
             
             return $this->redirectToRoute('app_types');
         }
-    
+        $this->addFlash(
+            'success',
+            'Type was eddited'
+        );
         return $this->render('type/edit.html.twig', [
             'slug' => $slug,
             'type' => $type,

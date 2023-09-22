@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class PokedexController extends AbstractController
 {
@@ -71,7 +72,8 @@ class PokedexController extends AbstractController
         ]);
     }
     
-    #[Route('pokedex/add', name: 'app_add_to_pokedex')]
+    #[Route('add/pokedex', name: 'app_add_to_pokedex')]
+    #[IsGranted('ROLE_ADMIN')]
     public function addToPokedex(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
         $form = $this->createForm(PokemonType::class);
@@ -83,13 +85,19 @@ class PokedexController extends AbstractController
             $entityManagerInterface->flush();
             return $this->redirectToRoute('app_pokedex');
         }
+        $this->addFlash(
+            'success',
+            'New pokemon found'
+        );
         return $this->render('pokedex/add.html.twig', [
             'form' => $form,
         ]);
     }
 
 
-    #[Route('pokedex/edit/{slug}', name: 'app_edit_from_pokedex')]
+    #[Route('edit/pokedex/{slug}', name: 'app_edit_from_pokedex')]
+    #[IsGranted('ROLE_ADMIN')]
+
     public function editFrompokedex(Request $request, EntityManagerInterface $entityManagerInterface, string $slug): Response
     {
         $pokemon = $entityManagerInterface->getRepository(Pokemon::class)->findOneBy(['name' => $slug]);
@@ -107,7 +115,10 @@ class PokedexController extends AbstractController
             
             return $this->redirectToRoute('app_pokedex');
         }
-    
+        $this->addFlash(
+            'success',
+            'Pokemon was eddited'
+        );
         return $this->render('pokedex/edit.html.twig', [
             'slug' => $slug,
             'pokemon' => $pokemon,

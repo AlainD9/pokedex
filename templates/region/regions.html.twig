@@ -5,11 +5,13 @@
 {% block body %}
 
     <a href="{{ path('app_index') }}"><h1>Pokemen</a> Regions</h1>
-
-        <h3><a href="{{ path('app_add_to_regions') }}">add a Region</a></h3>
-        <br>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_add_to_regions') }}">add a Region</a><br>
+        {% endif %}
         {% for region in regions %}
-            <a href="{{ path('app_edit_from_regions', { slug: region.slug }) }}">(Edit)</a>&nbsp;-&nbsp;
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('app_edit_from_regions', { slug: region.slug }) }}">(Edit)</a>&nbsp;-&nbsp;
+            {% endif %}
             <a href="{{ path('app_region', { slug: region.slug }) }}">{{ region.name }}</a>
             <br>
         {% else %}
