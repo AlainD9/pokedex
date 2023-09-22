@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use App\Repository\TypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,6 +21,16 @@ class Type
 
     #[ORM\OneToMany(mappedBy: 'type', targetEntity: Pokemon::class, orphanRemoval: true)]
     private Collection $pokemon;
+
+    #[ORM\Column(length: 255, unique: true)]    
+    #[Gedmo\Slug(
+        fields: ['name'],
+        style: 'lower',
+        separator: '_',
+        updatable: true,
+        unique: true,
+    )]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -75,5 +86,17 @@ class Type
     public function __toString(): string
     {
         return $this->getName(); 
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }

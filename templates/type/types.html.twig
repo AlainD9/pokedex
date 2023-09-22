@@ -5,12 +5,14 @@
 {% block body %}
 
     <a href="{{ path('app_index') }}"><h1>Pokemen</a> Types</h1>
-
-        <h3><a href="{{ path('app_add_to_types') }}">add a type</a></h3>
-        <br>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_add_to_types') }}">add a type</a><br>
+        {% endif %}
         {% for type in types %}
-            <a href="{{ path('app_edit_from_types', { typeName: type.name }) }}">(Edit)</a>&nbsp;-&nbsp;
-            <a href="{{ path('app_type', {typeName: type.name}) }}">{{ type.name }}</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('app_edit_from_types', { slug: type.slug }) }}">(Edit)</a>&nbsp;-&nbsp;
+            {% endif %}
+            <a href="{{ path('app_type', { slug: type.slug }) }}">{{ type.name }}</a>
             <br>
         {% else %}
             {{ 'No types found.' }}

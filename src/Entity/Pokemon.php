@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use App\Repository\PokemonRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,6 +31,16 @@ class Pokemon
     #[ORM\ManyToOne(inversedBy: 'pokemon')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Region $region = null;
+
+    #[ORM\Column(length: 255, unique: true)]    
+    #[Gedmo\Slug(
+        fields: ['name'],
+        style: 'lower',
+        separator: '_',
+        updatable: true,
+        unique: true,
+    )]
+    private ?string $slug = null;
 
     public function getId(): ?int
     {
@@ -92,6 +103,18 @@ class Pokemon
     public function setRegion(?Region $region): static
     {
         $this->region = $region;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

@@ -9,11 +9,11 @@
     <img src="{{ pokemon.image }}" alt="{{pokemon.name}}'s gif">
     <br>
 {% if previousPokemon %}
-    <a href="{{ path('app_pokemon', {'pokemonName': previousPokemon.name}) }}">Previous pokemon</a>
+    <a href="{{ path('app_pokemon', {'slug': previousPokemon.slug}) }}">Previous pokemon</a>
 {% endif %}
 
 {% if nextPokemon %}
-    <a href="{{ path('app_pokemon', {'pokemonName': nextPokemon.name}) }}">Next pokemon</a>
+    <a href="{{ path('app_pokemon', {'slug': nextPokemon.slug}) }}">Next pokemon</a>
 {% endif %}
 
     <br>

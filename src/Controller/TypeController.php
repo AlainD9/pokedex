@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TypeController extends AbstractController
 {
@@ -21,10 +22,10 @@ class TypeController extends AbstractController
         ]);
     }
 
-    #[Route('/type/{typeName<[a-zA-Z_\s-]+>}', name: 'app_type')]
-    public function show(string $typeName, EntityManagerInterface $entityManager, TypeRepository $typeRepository): Response
+    #[Route('/type/{slug}', name: 'app_type')]
+    public function show(string $slug, EntityManagerInterface $entityManager, TypeRepository $typeRepository): Response
     {
-        $type = $typeRepository->findOneBy(['name' => $typeName]);
+        $type = $typeRepository->findOneBy(['slug' => $slug]);
     
         if (!$type)
         {
@@ -52,15 +53,17 @@ class TypeController extends AbstractController
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-    
+      
         return $this->render('type/type.html.twig', [
-            'typeName' => $typeName,
+            'slug' => $slug,
+            'type' => $type,
             'previousType' => $previousType,
             'nextType' => $nextType,
         ]);
     }
    
-    #[Route('types/add', name: 'app_add_to_types')]
+    #[Route('add/types', name: 'app_add_to_types')]
+    #[IsGranted('ROLE_ADMIN')]
     public function addToType(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
         $form = $this->createForm(TypeType::class);
@@ -72,15 +75,20 @@ class TypeController extends AbstractController
             $entityManagerInterface->flush();
             return $this->redirectToRoute('app_types');
         }
+        $this->addFlash(
+            'success',
+            'New type found'
+        );
         return $this->render('type/add.html.twig', [
             'form' => $form,
         ]);
     }
 
-    #[Route('types/edit/{typeName<[a-zA-Z_\s-]+>}', name: 'app_edit_from_types')]
-    public function editFromTypes(Request $request, EntityManagerInterface $entityManagerInterface, string $typeName): Response
+    #[Route('edit/types/{slug}', name: 'app_edit_from_types')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function editFromTypes(Request $request, EntityManagerInterface $entityManagerInterface, string $slug): Response
     {
-        $type = $entityManagerInterface->getRepository(Type::class)->findOneBy(['name' => $typeName]);
+        $type = $entityManagerInterface->getRepository(Type::class)->findOneBy(['slug' => $slug]);
     
         if (!$type) {
             throw $this->createNotFoundException('type not found');
@@ -95,9 +103,12 @@ class TypeController extends AbstractController
             
             return $this->redirectToRoute('app_types');
         }
-    
+        $this->addFlash(
+            'success',
+            'Type was eddited'
+        );
         return $this->render('type/edit.html.twig', [
-            'typeName' => $typeName,
+            'slug' => $slug,
             'type' => $type,
             'form' => $form->createView(),
         ]);

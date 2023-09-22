@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RegionController extends AbstractController
 {
@@ -21,10 +22,10 @@ class RegionController extends AbstractController
         ]);
     }
 
-    #[Route('region/{regionName<[a-zA-Z_\s-]+>}', name: 'app_region')]
-    public function show(string $regionName, EntityManagerInterface $entityManager, RegionRepository $regionRepository): Response
+    #[Route('region/{slug}', name: 'app_region')]
+    public function show(string $slug, EntityManagerInterface $entityManager, RegionRepository $regionRepository): Response
     {
-        $region = $regionRepository->findOneBy(['name' => $regionName]);
+        $region = $regionRepository->findOneBy(['slug' => $slug]);
     
         if (!$region)
         {
@@ -54,13 +55,16 @@ class RegionController extends AbstractController
             ->getOneOrNullResult();
     
         return $this->render('region/region.html.twig', [
-            'regionName' => $regionName,
+            'slug' => $slug,
+            'region' => $region,
             'previousRegion' => $previousRegion,
             'nextRegion' => $nextRegion,
         ]);
     }
     
-    #[Route('regions/add', name: 'app_add_to_regions')]
+    #[Route('add/regions', name: 'app_add_to_regions')]
+    #[IsGranted('ROLE_ADMIN')]
+
     public function addToRegion(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
         $form = $this->createForm(RegionType::class);
@@ -72,15 +76,21 @@ class RegionController extends AbstractController
             $entityManagerInterface->flush();
             return $this->redirectToRoute('app_regions');
         }
+        $this->addFlash(
+            'success',
+            'New Region found'
+        );
         return $this->render('region/add.html.twig', [
             'form' => $form,
         ]);
     }
 
-    #[Route('regions/edit/{regionName<[a-zA-Z_\s-]+>}', name: 'app_edit_from_regions')]
-    public function editFromRegions(Request $request, EntityManagerInterface $entityManagerInterface, string $regionName): Response
+    #[Route('edit/regions/{slug}', name: 'app_edit_from_regions')]
+    #[IsGranted('ROLE_ADMIN')]
+
+    public function editFromRegions(Request $request, EntityManagerInterface $entityManagerInterface, string $slug): Response
     {
-        $region = $entityManagerInterface->getRepository(Region::class)->findOneBy(['name' => $regionName]);
+        $region = $entityManagerInterface->getRepository(Region::class)->findOneBy(['slug' => $slug]);
     
         if (!$region) {
             throw $this->createNotFoundException('Region not found');
@@ -95,9 +105,12 @@ class RegionController extends AbstractController
             
             return $this->redirectToRoute('app_regions');
         }
-    
+        $this->addFlash(
+            'success',
+            'Region was eddited'
+        );
         return $this->render('region/edit.html.twig', [
-            'regionName' => $regionName,
+            'slug' => $slug,
             'region' => $region,
             'form' => $form->createView(),
         ]);
