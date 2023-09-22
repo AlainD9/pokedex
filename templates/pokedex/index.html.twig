@@ -4,11 +4,16 @@
 
 {% block body %}
 
- <a href="{{ path('app_index') }}"><h1>Pokemen</h1></a>
+<a href="{{ path('app_index') }}"><h1>Pokemen</h1></a>
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ path('app_logout') }}"><h2>Logout</h2></a>
+    {% else %}
+        <a href="{{ path('app_login') }}"><h2>Login</h2></a>
+    {% endif %}
 
-        <a href="{{ path('app_pokedex') }}"><h3>Pokedex</h3></a>
-        <a href="{{ path('app_regions') }}"><h3>Regions</h3></a>
-        <a href="{{ path('app_types') }}"><h3>Types</h3></a>
-        {# <a href="{{ path('app_index') }}"><h3>Tutorials</a> (yet to come)</h3> #}
+    <a href="{{ path('app_pokedex') }}"><h2>Pokedex</h2></a>
+    <a href="{{ path('app_regions') }}"><h2>Regions</h2></a>
+    <a href="{{ path('app_types') }}"><h2>Types</h2></a>
+    {# <a href="{{ path('app_index') }}"><h2>Tutorials</a> (yet to come)</h2> #}
 
 {% endblock %}
