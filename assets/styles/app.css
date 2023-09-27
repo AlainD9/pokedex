@@ -1,0 +1,32 @@
+*{
+    background: #000;
+    color:aliceblue;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    text-decoration: none;
+}
+
+/* Style the H1 element with a larger font size */
+h1{
+    font-size: 42px; /* Adjust the font size as needed */
+    margin: 20px 0; /* Add some spacing to the top and bottom */
+}
+
+/* Style other headings (H2, H3, etc.) with a slightly smaller font size */
+h2{
+    font-size: 28px; /* Adjust the font size as needed */
+    padding-top: 20px; /* Add some spacing to the top and bottom */
+}
+
+/* Style paragraphs and other text elements with a smaller font size */
+p, ul, ol, li, a{
+    font-size: 18px; /* Adjust the font size as needed */
+    margin: 10px 0; /* Add some spacing to the top and bottom */
+}
+
+/* Center-align content within a container (adjust container width as needed) */
+.container{
+    max-width: 800px; /* Adjust the maximum width as needed */
+    margin: 0 auto; /* Center align the container horizontally */
+    padding: 20px; /* Add some padding for spacing */
+}
