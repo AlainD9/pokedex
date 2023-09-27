@@ -5,18 +5,37 @@
 {% block body %}
 
     <a href="{{ path('app_index') }}"><h1>Pokemen</a> Pokedex</h1>
+
+        {% if is_granted('ROLE_USER') %}
+            <a href="{{ path('app_logout') }}"><h2>Logout</h2></a>
+        {% else %}
+            <a href="{{ path('app_login') }}"><h2>Login</h2></a>
+        {% endif %}
+
         {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('app_add_to_pokedex') }}">add a pokemon</a><br>
         {% endif %}
+
         {% for pokemen in pokemon %}
+
             {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('app_edit_from_pokedex', { slug: pokemen.slug }) }}">(Edit)</a>&nbsp;-&nbsp;
             {% endif %}
+
             <a href="{{ path('app_pokemon', { slug: pokemen.slug }) }}">{{ pokemen.name }}</a> - {{ pokemen.number }}
+
+            {% if is_granted('ROLE_ADMIN') %}
+                &nbsp;-&nbsp;<a href="{{ path('app_delete_from_pokedex', { slug: pokemen.slug }) }}" onclick="return confirm ('Are you sure?')">(Delete)</a>&nbsp;-&nbsp;
+            {% endif %}
+
             <br>
+
         {% else %}
+        
             {{ 'Mising No.' }}
+
         {% endfor %}
+        
     <br>
     <a href="{{ path('app_index') }}">Back to Pokemen's Index</a>
 

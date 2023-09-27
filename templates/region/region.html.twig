@@ -4,11 +4,18 @@
 
 {% block body %}
 
-    <a href="{{ path('app_index') }}"><h1>Pokemen</a><br><br>{{ region.name }}</h1>
+    <a href="{{ path('app_index') }}"><h1>Pokemen</a></h1>
 
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ path('app_logout') }}"><h2>Logout</h2></a>
+    {% else %}
+        <a href="{{ path('app_login') }}"><h2>Login</h2></a>
+    {% endif %}
 
-    {# <img src="{{ region.image }}" alt="{{ region.name }}'s gif"> #}
-    <br>
+    <h1>{{ region.name }}</h1>
+    
+    {# <img src="{{ region.image }}" alt="{{ region.name }}'s gif"> #}<br>
+
     {% if previousRegion %}
         <a href="{{ path('app_region', {'slug': previousRegion.slug}) }}">Previous Region</a>
     {% endif %}

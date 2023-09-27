@@ -5,18 +5,30 @@
 {% block body %}
 
     <a href="{{ path('app_index') }}"><h1>Pokemen</a> Regions</h1>
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ path('app_logout') }}"><h2>Logout</h2></a>
+    {% else %}
+        <a href="{{ path('app_login') }}"><h2>Login</h2></a>
+    {% endif %}
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_add_to_regions') }}">add a Region</a><br>
+    {% endif %}
+
+    {% for region in regions %}
         {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('app_add_to_regions') }}">add a Region</a><br>
+            <a href="{{ path('app_edit_from_regions', { slug: region.slug }) }}">(Edit)</a>&nbsp;-&nbsp;
         {% endif %}
-        {% for region in regions %}
-            {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('app_edit_from_regions', { slug: region.slug }) }}">(Edit)</a>&nbsp;-&nbsp;
-            {% endif %}
-            <a href="{{ path('app_region', { slug: region.slug }) }}">{{ region.name }}</a>
-            <br>
+        <a href="{{ path('app_region', { slug: region.slug }) }}">{{ region.name }}</a>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            &nbsp;-&nbsp;<a href="{{ path('app_delete_from_regions', { slug: region.slug }) }}">(Delete)</a>
+        {% endif %}
+        <br>
         {% else %}
             {{ 'No regions found.' }}
-        {% endfor %}
+    {% endfor %}
+
     <br>
     <a href="{{ path('app_index') }}">Back to Pokemen's Index</a>
 

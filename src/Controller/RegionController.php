@@ -116,4 +116,23 @@ class RegionController extends AbstractController
         ]);
     }
 
+    #[Route('delete/regions/{slug}', name: 'app_delete_from_regions')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function deleteFromRegions(EntityManagerInterface $entityManagerInterface, string $slug): Response
+    {
+        $translatedSlug = str_replace('_', ' ', $slug);
+    
+        $region = $entityManagerInterface->getRepository(Region::class)->findOneBy(['name' => $translatedSlug]);
+    
+        $entityManagerInterface->remove($region);
+        $entityManagerInterface->flush();
+    
+        $this->addFlash(
+            'success',
+            'region was deleted'
+        );
+    
+        return $this->redirectToRoute('app_regions');
+    }
+
 }

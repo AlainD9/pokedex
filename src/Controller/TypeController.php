@@ -113,4 +113,24 @@ class TypeController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('delete/types/{slug}', name: 'app_delete_from_types')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function deleteFromTypes(EntityManagerInterface $entityManagerInterface, string $slug): Response
+    {
+        $translatedSlug = str_replace('_', ' ', $slug);
+    
+        $type = $entityManagerInterface->getRepository(Type::class)->findOneBy(['name' => $translatedSlug]);
+    
+        $entityManagerInterface->remove($type);
+        $entityManagerInterface->flush();
+    
+        $this->addFlash(
+            'success',
+            'Type was deleted'
+        );
+    
+        return $this->redirectToRoute('app_types');
+    }
+
 }

@@ -4,7 +4,14 @@
 
 {% block body %}
 
-    <a href="{{ path('app_index') }}"><h1>Pokemen</a><br><br>{{ type.name }}</h1>
+    <a href="{{ path('app_index') }}"><h1>Pokemen</a>
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ path('app_logout') }}"><h2>Logout</h2></a>
+    {% else %}
+        <a href="{{ path('app_login') }}"><h2>Login</h2></a>
+    {% endif %}
+    
+    <br><br>{{ type.name }}</h1>
 
     {# <img src="{{ type.image }}" alt="{{ type.name }}'s gif"> #}
     <br>
