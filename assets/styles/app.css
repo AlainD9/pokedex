@@ -1,32 +1,71 @@
 *{
-    background: #000;
+    margin: 0;
+    padding: 0;
     color:aliceblue;
     font-family: Arial, sans-serif;
     text-align: center;
+}
+
+body{
+    background-color: #000;
+    background-image: url('https://cdn.wallpapersafari.com/11/57/TrMk4F.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+a{
     text-decoration: none;
+    transition: border 0.3s, color 0.3s;
 }
 
-/* Style the H1 element with a larger font size */
-h1{
-    font-size: 42px; /* Adjust the font size as needed */
-    margin: 20px 0; /* Add some spacing to the top and bottom */
+a:hover{
+    color: #ffff00;
 }
 
-/* Style other headings (H2, H3, etc.) with a slightly smaller font size */
-h2{
-    font-size: 28px; /* Adjust the font size as needed */
-    padding-top: 20px; /* Add some spacing to the top and bottom */
+h1, h2{
+    font-size: 28px;
+    padding: 20px;
 }
 
-/* Style paragraphs and other text elements with a smaller font size */
-p, ul, ol, li, a{
-    font-size: 18px; /* Adjust the font size as needed */
-    margin: 10px 0; /* Add some spacing to the top and bottom */
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
 }
 
-/* Center-align content within a container (adjust container width as needed) */
-.container{
-    max-width: 800px; /* Adjust the maximum width as needed */
-    margin: 0 auto; /* Center align the container horizontally */
-    padding: 20px; /* Add some padding for spacing */
+.header-left{
+    text-align: left;
+}
+
+.header-left, .header-right {
+    font-size: 24px;
+    color: aliceblue;
+    margin: 0;
+    padding: 5px 10px;
+    border: 1px solid aliceblue;
+    border-radius: 5px;
+}
+
+.header-right{
+    text-align: right;
+}
+
+.backPaddle{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    text-align: center;
+    font-size: 20px;
+    padding: 10px 0;
+}
+
+
+h1, h2, p, a {
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.form-control, button{
+    color: #000;
 }

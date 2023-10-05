@@ -9,6 +9,7 @@ install: ## Install the project
 	make rebuild
 
 rebuild: ## Rebuild database
+	symfony console cache:clear
 	symfony console d:d:d -f
 	symfony console d:d:c
 	symfony console d:s:u -f

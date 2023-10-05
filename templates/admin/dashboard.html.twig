@@ -1,0 +1,8 @@
+
+
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block field_image_widget %}
+{# Access the custom option 'default_value' and set it as the 'value' attribute for the input field #}
+<input type="text" {{ block('widget_attributes') }} value="{{ field.vars.custom_options.default_value }}" />
+{% endblock %}

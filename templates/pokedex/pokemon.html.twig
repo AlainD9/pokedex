@@ -3,20 +3,24 @@
 {% block title %}Hello PokedexController!{% endblock %}
 
 {% block body %}
-    <a href="{{ path('app_index') }}"><h1>Pokemen</a><br><br>{{ pokemon.name }} - {{ pokemon.number }}</h1>
 
-    <h3>{{ 'Pokemon\'s type: ' }}{{ pokemon.type.name }}<br>{{ 'First region: ' }}{{ pokemon.region.name }}</h3>
+    <h1>{{ pokemon.name }} nº {{ pokemon.number }}</h1>
     <img src="{{ pokemon.image }}" alt="{{pokemon.name}}'s gif">
-    <br>
-{% if previousPokemon %}
-    <a href="{{ path('app_pokemon', {'slug': previousPokemon.slug}) }}">Previous pokemon</a>
-{% endif %}
 
-{% if nextPokemon %}
-    <a href="{{ path('app_pokemon', {'slug': nextPokemon.slug}) }}">Next pokemon</a>
-{% endif %}
-
+    <h2>{{ 'Pokemon\'s type: ' }}{{ pokemon.type.name }}<br>{{ 'First region: ' }}{{ pokemon.region.name }}</h2>
     <br>
-    <a href="{{ path('app_pokedex') }}">Back to Pokedex</a>
+    <div class="backPaddle">
+        {% if previousPokemon %}
+            <a href="{{ path('app_pokemon', {'slug': previousPokemon.slug}) }}"> ← </a>
+        {% endif %}
+        {% if previousPokemon and nextPokemon %}
+        &nbsp;&nbsp;
+        {% endif %}
+        {% if nextPokemon %}
+            <a href="{{ path('app_pokemon', {'slug': nextPokemon.slug}) }}"> → </a>
+        {% endif %}
+        <br>
+        <a href="{{ path('app_pokedex') }}">Back to Pokedex</a>
+    </div>
 
 {% endblock %}

@@ -98,7 +98,7 @@ class PokedexController extends AbstractController
     #[Route('edit/pokedex/{slug}', name: 'app_edit_from_pokedex')]
     #[IsGranted('ROLE_ADMIN')]
 
-    public function editFrompokedex(Request $request, EntityManagerInterface $entityManagerInterface, string $slug): Response
+    public function editFromPokedex(Request $request, EntityManagerInterface $entityManagerInterface, string $slug): Response
     {
         $pokemon = $entityManagerInterface->getRepository(Pokemon::class)->findOneBy(['name' => $slug]);
     
@@ -124,6 +124,25 @@ class PokedexController extends AbstractController
             'pokemon' => $pokemon,
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('delete/pokedex/{slug}', name: 'app_delete_from_pokedex')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function deleteFromPokedex(EntityManagerInterface $entityManagerInterface, string $slug): Response
+    {
+        $translatedSlug = str_replace('_', ' ', $slug);
+    
+        $pokemon = $entityManagerInterface->getRepository(Pokemon::class)->findOneBy(['name' => $translatedSlug]);
+    
+        $entityManagerInterface->remove($pokemon);
+        $entityManagerInterface->flush();
+    
+        $this->addFlash(
+            'success', 
+            'pokemon was deleted'
+        );
+    
+        return $this->redirectToRoute('app_pokedex');
     }
 
 }

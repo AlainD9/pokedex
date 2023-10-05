@@ -2,26 +2,33 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata as Api;
 use Gedmo\Mapping\Annotation as Gedmo;
 use App\Repository\PokemonRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
+#[Api\ApiResource(normalizationContext:['groups' => ['read_pokemon']])]
 class Pokemon
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Api\ApiProperty(identifier: false)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
+    #[Groups(['read_pokemon'])]
     private ?string $name = null;
 
     #[ORM\Column(unique: true)]
+    #[Groups(['read_pokemon'])]
     private ?int $number = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['read_pokemon'])]
     private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'pokemon')]
@@ -33,6 +40,7 @@ class Pokemon
     private ?Region $region = null;
 
     #[ORM\Column(length: 255, unique: true)]    
+    #[Api\ApiProperty(identifier: true)]
     #[Gedmo\Slug(
         fields: ['name'],
         style: 'lower',

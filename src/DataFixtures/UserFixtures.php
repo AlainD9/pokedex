@@ -12,7 +12,7 @@ class UserFixtures extends Fixture
     {
         $user = new User();
         $user->setEmail('JohnDoe@pokemen.com');
-        $user->setPassword('$2y$13$a9FRAhcpmKv8s/ZVY7Wofej3XbRA.m.FvyiG0OFCtpKeNdOU062Ke');
+        $user->setPlainPassword('1234');
         $user->setFirstname('John');
         $user->setLastname('DOE');
         $user->setBirthday('18/07/1996');

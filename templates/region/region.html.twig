@@ -4,19 +4,22 @@
 
 {% block body %}
 
-    <a href="{{ path('app_index') }}"><h1>Pokemen</a><br><br>{{ region.name }}</h1>
+    <h1>{{ region.name }}</h1>
+    
+    {# <img src="{{ region.image }}" alt="{{ region.name }}'s gif"> #}<br>
 
-
-    {# <img src="{{ region.image }}" alt="{{ region.name }}'s gif"> #}
-    <br>
+   <div class="backPaddle">
     {% if previousRegion %}
-        <a href="{{ path('app_region', {'slug': previousRegion.slug}) }}">Previous Region</a>
+        <a href="{{ path('app_region', {'slug': previousRegion.slug}) }}"> ← </a>
     {% endif %}
-
+    {% if previousRegion and nextRegion %}
+    &nbsp;&nbsp;
+    {% endif %}
     {% if nextRegion %}
-        <a href="{{ path('app_region', {'slug': nextRegion.slug}) }}">Next Region</a>
+        <a href="{{ path('app_region', {'slug': nextRegion.slug}) }}"> → </a>
     {% endif %}
     <br>
     <a href="{{ path('app_regions') }}">Back to Regions</a>
+    </div>
     
 {% endblock %}

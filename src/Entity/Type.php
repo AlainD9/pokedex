@@ -2,27 +2,33 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata as Api;
 use Gedmo\Mapping\Annotation as Gedmo;
 use App\Repository\TypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TypeRepository::class)]
+#[Api\ApiResource(normalizationContext: ['groups' => ['read_type']] )]
 class Type
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Api\ApiProperty(identifier: false)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
+    #[Groups(['read_type'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'type', targetEntity: Pokemon::class, orphanRemoval: true)]
     private Collection $pokemon;
 
     #[ORM\Column(length: 255, unique: true)]    
+    #[Api\ApiProperty(identifier: true)]
     #[Gedmo\Slug(
         fields: ['name'],
         style: 'lower',
